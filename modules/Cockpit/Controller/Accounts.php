@@ -263,7 +263,10 @@ class Accounts extends \Cockpit\AuthController {
 
         $languages = [['i18n' => 'en', 'language' => 'English']];
 
-        foreach ($this->app->helper('fs')->ls('*.php', '#config:cockpit/i18n') as $file) {
+        foreach (array_merge(
+             $this->app->helper('fs')->ls('*.php', '#config:cockpit/i18n'),
+             $this->app->helper('fs')->ls('*.php', '#root:i18n')
+        ) as $file) {
 
             $lang     = include($file->getRealPath());
             $i18n     = $file->getBasename('.php');

@@ -1,0 +1,6 @@
+- api route für collections die nur einen eintrag haben (kein array zurück geben?)
+- schema standardmäßig mit collections nicht zurück geben (aber get param einbauen der erlaubt das schema zu ergänzen)
+- multi lang collections
+- logo änderbar / deaktivierbar
+- farbakzent setzbar
+- skip dashboard option

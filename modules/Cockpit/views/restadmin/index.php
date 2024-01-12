@@ -43,20 +43,32 @@
                             <label class="uk-text-small uk-text-bold uk-text-upper">@lang('API-Key')</label>
 
                             <div class="uk-flex uk-flex-middle">
-                                <input class="uk-width-1-1 uk-form-large uk-margin-right uk-text-monospace" type="text" placeholder="@lang('No key generated')" bind="keys.special[{idx}].token" readonly>
+                                <input class="uk-width-1-1 uk-form-large uk-margin-right uk-text-monospace" type="text" placeholder="@lang('No key generated')" bind="keys.special[{idx}].token">
                                 <a class="uk-margin-right" onclick="{ parent.copyApiKey }" title="@lang('Copy Token')" data-uk-tooltip="pos:'top'"><i class="uk-icon-clone"></i></a>
                                 <a onclick="{ parent.generate }" title="@lang('Generate Token')" data-uk-tooltip="pos:'top'"><i class="uk-icon-magic"></i></a>
+                            </div>
+                            <div if="{keys.special[{idx}].token === ''}" class="uk-margin-top">
+                                @lang('Empty token means public access')
                             </div>
                         </div>
 
                         <div class="uk-form-row">
-                            <label class="uk-text-small">@lang('Rules')</label>
-                            <field-code bind="keys.special[{idx}].rules"></field-code>
+                            <label class="uk-text-small">@lang('Info')</label>
+                            <input class="uk-width-1-1 uk-form-large uk-text-muted uk-form-blank" type="text" bind="keys.special[{idx}].info">
                         </div>
 
+                        <hr>
+
                         <div class="uk-form-row">
-                            <label class="uk-text-small">@lang('Info')</label>
-                            <input class="uk-width-1-1 uk-form-large uk-text-muted uk-form-blank" type="text" placeholder="..." bind="keys.special[{idx}].info">
+                            <label class="uk-text-small">@lang('Rules')</label>
+                            <field-code bind="keys.special[{idx}].rules" height="100"></field-code>
+                        </div>
+
+                        <hr>
+
+                        <div class="uk-form-row">
+                            <label class="uk-text-small">@lang('Endpoint Code')</label>
+                            <field-code bind="keys.special[{idx}].code" syntax="php"></field-code>
                         </div>
 
                     </div>
@@ -91,7 +103,7 @@
     </div>
 
 
-    <script type="view/script">
+    <script @noOp()type="view/script">
 
         this.mixin(RiotBindMixin);
 

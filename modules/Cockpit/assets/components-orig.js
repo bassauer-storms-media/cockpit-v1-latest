@@ -4377,7 +4377,7 @@ riot.tag2('field-text', '<div class="uk-position-relative field-text-container">
 
 });
 
-riot.tag2('field-textarea', '<textarea ref="input" class="uk-width-1-1 {opts.cls}" bind="{opts.bind}" bind-event="input" riot-rows="{opts.rows || 10}" riot-placeholder="{opts.placeholder || \'\'}"></textarea> <div class="uk-text-right uk-text-small uk-text-muted" ref="lengthIndicator" hide="{opts.showCount === false}"></div>', 'field-textarea [ref="lengthIndicator"],[data-is="field-textarea"] [ref="lengthIndicator"]{ font-family: monospace; }', '', function(opts) {
+riot.tag2('field-textarea', '<textarea ref="input" class="uk-width-1-1 {opts.cls}" bind="{opts.bind}" bind-event="input" riot-rows="{opts.rows || 10}" riot-placeholder="{opts.placeholder || \'Text...\'}"></textarea> <div class="uk-text-right uk-text-small uk-text-muted" ref="lengthIndicator" hide="{opts.showCount === false}"></div>', 'field-textarea [ref="lengthIndicator"],[data-is="field-textarea"] [ref="lengthIndicator"]{ font-family: monospace; }', '', function(opts) {
 
         var $this = this;
 

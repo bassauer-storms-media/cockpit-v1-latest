@@ -19,6 +19,11 @@ $this->on('before', function() {
 
         $this->module('cockpit')->setUser(false, false);
 
+        /*
+         * Example call: /api/test-none-public
+         * $route: /api/test-none-public
+         * $path: test-none-public
+         */
         $route = $this['route'];
         $path  = $params[':splat'][0];
 
@@ -41,13 +46,7 @@ $this->on('before', function() {
                 $this->module('cockpit')->setUser($account, false);
             }
 
-        // is jwt token?
-        } elseif ($token && preg_match('/^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]*$/', $token)) {
-
-            // todo
-
-        // default
-        } elseif ($token) {
+        } else {
 
             $apikeys = $this->module('cockpit')->loadApiKeys();
 
@@ -56,9 +55,9 @@ $this->on('before', function() {
 
             if (!$allowed && count($apikeys['special'])) {
 
-                foreach ($apikeys['special'] as &$apikey) {
+                foreach ($apikeys['special'] as $apikey) {
 
-                    if ($apikey['token'] == $token) {
+                    if ($apikey['token'] == $token || ( empty($apikey['token']) && $token === null && str_contains($apikey['rules'], $path) )) {
 
                         $rules = trim($apikey['rules']);
 
@@ -82,6 +81,7 @@ $this->on('before', function() {
 
                         break;
                     }
+
                 }
             }
 
@@ -119,6 +119,15 @@ $this->on('before', function() {
             $path = implode('/', array_filter(explode('/', $path), function($s) { return trim($s, '.'); }));
         }
 
+        $isVirtualApi = false;
+        foreach($apikeys['special'] as $keyRow) {
+            if(str_contains($keyRow['rules'], $path) && trim($keyRow['code']) !== ''){
+                $codeStr = rtrim(ltrim($keyRow['code'], '<?php'), ' ?>');
+                $isVirtualApi = true;
+                break;
+            }
+        }
+
         if ($resource == 'public' && $resourcefile = $this->path("#config:api/{$path}.php")) {
 
             $output = include($resourcefile);
@@ -145,7 +154,7 @@ $this->on('before', function() {
 
                 $output = ['error' => true];
 
-                $this->response->status = 406;
+                $this->response->status = 406; // Method not allowed
                 $this->trigger('cockpit.api.erroronrequest', [$route, $e->getMessage()]);
 
                 if ($this['debug']) {
@@ -154,6 +163,9 @@ $this->on('before', function() {
                     $output['message'] = 'Oooops, something went wrong.';
                 }
             }
+        }
+        elseif($allowed && $isVirtualApi) {
+            $output = eval($codeStr);
         }
 
         if ($output === false && $resource == 'public') {

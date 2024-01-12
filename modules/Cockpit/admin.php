@@ -25,9 +25,16 @@ $app->on('before', function() {
 
     $locale = $this->module('cockpit')->getUser('i18n', $this->helper('i18n')->locale);
 
-    if ($translationspath = $this->path("#config:cockpit/i18n/{$locale}.php")) {
+    if ($translationspath = ($p = $this->path("#config:cockpit/i18n/{$locale}.php")) ? $p : $this->path("#root:i18n/{$locale}.php")) {
         $this->helper('i18n')->locale = $locale;
         $this->helper('i18n')->load($translationspath, $locale);
+        // take a translation and remove all duplicate keys
+        /*echo '<pre>';
+        $foo = $this->helper('i18n')->data($this->helper('i18n')->locale);
+        unset($foo['@meta']);
+        ksort($foo);
+        var_export($foo);
+        exit;*/
     }
 
     $this->bind('/cockpit.i18n.data', function() {
@@ -188,15 +195,11 @@ $app->on('cockpit.search', function($search, $list) {
 // dashboard widgets
 
 
-$app->on('admin.dashboard.widgets', function($widgets) {
+$app->on('admin.dashboard.header', function() {
 
     $title = $this('i18n')->get('Today');
 
-    $widgets[] = [
-        'name'    => 'time',
-        'content' => $this->view('cockpit:views/widgets/datetime.php', compact('title')),
-        'area'    => 'main'
-    ];
+    echo $this->view('cockpit:views/widgets/datetime.php', compact('title'));
 
 }, 100);
 

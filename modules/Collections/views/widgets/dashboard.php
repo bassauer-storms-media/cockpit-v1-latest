@@ -17,12 +17,11 @@
 
         @if(count($collections))
 
-            <div class="uk-margin">
+            <div class="uk-margin uk-clearfix">
 
-                <ul class="uk-list uk-list-space uk-margin-top">
-                    @foreach(array_slice($collections, 0, count($collections) > 5 ? 5: count($collections)) as $col)
-                    <li>
-                        <div class="uk-grid uk-grid-small">
+                <div class="uk-list uk-list-space uk-margin-top uk-grid">
+                    @foreach($collections as $col)
+                        <div class="uk-grid uk-grid-small uk-column-medium-1-2 uk-margin-remove">
                             <div class="uk-flex-item-1 uk-text-truncate">
                                 <a class="uk-link-muted" href="@route('/collections/entries/'.$col['name'])">
 
@@ -39,9 +38,8 @@
                                 @endif
                             </div>
                         </div>
-                    </li>
                     @endforeach
-                </ul>
+                </div>
 
             </div>
 

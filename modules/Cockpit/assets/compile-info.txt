@@ -1,0 +1,5 @@
+> riot modules/Cockpit/assets/components modules/Cockpit/assets/components.js
+
+for HTML tag files:
+
+riot --ext html modules/Cockpit/assets/component modules/Cockpit/assets/components.js

@@ -57,6 +57,7 @@ class App extends \Lime\App {
                     'include'  => '<?php include($app->path(expr)); ?>',
                     'lang'     => '<?php echo $app("i18n")->get(expr); ?>',
                     'json'     => '<?php echo json_encode(expr); ?>',
+                    'noOp'     => '<?php ?>', // no operation - used for the js blocks so they can be correctly syntax highlighted
                 ];
 
 

@@ -1,4 +1,32 @@
 <?php
+
+// dev/debugging lib (like d() from laravel) - will not be loaded if it does not exist
+if(PHP_MAJOR_VERSION === 8)
+    ($debug_lib_exists=is_file($f='../kint-new/kint.phar')) ? require_once($f) : null;
+else
+    ($debug_lib_exists=is_file($f='../kint/Kint.class.php')) ? require_once($f) : null;
+
+function isDev() {
+    return
+        ($_SERVER['IS_DEV'] ?? false) === 'yes'
+        ||
+        ($_SERVER['PHPRC'] ?? false) === '\xampp\php' // hopefully a prod server will never ever tell his PHPRC is xampp..
+        ||
+        ( ($_SERVER['SERVER_SOFTWARE'] ?? false) && strpos($_SERVER['SERVER_SOFTWARE'], 'Development Server') !== false ) // valet / artisan builtin webserver
+        ||
+        ( isset($_SERVER["DOCUMENT_URI"]) && !empty($_SERVER["DOCUMENT_URI"]) && strpos($_SERVER["DOCUMENT_URI"], 'valet') !== false ) // valet
+        ;
+}
+
+if(PHP_MAJOR_VERSION === 8 && isDev()) {
+    function dd(...$v) {
+        d(...$v);
+        exit;
+    }
+}
+
+// ----
+
 /**
  * This file is part of the Cockpit project.
  *

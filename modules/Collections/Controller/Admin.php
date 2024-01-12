@@ -80,7 +80,8 @@ class Admin extends \Cockpit\AuthController {
                 'column' => '_created',
                 'dir' => -1,
             ],
-            'in_menu' => false
+            'in_menu' => false,
+            'max_entries' => -1
         ];
 
         $collection = $default;
@@ -176,6 +177,11 @@ class Admin extends \Cockpit\AuthController {
             return false;
         }
 
+        if(($collection['max_entries'] ?? -1) === 1) {
+            //return $this->entry($collection, $collection['first_entry_id']);
+            $this->app->reroute("/collections/entry/{$collection['name']}/{$collection['first_entry_id']}");
+        }
+
         $collection = array_merge([
             'sortable' => false,
             'sort' => [
@@ -221,7 +227,13 @@ class Admin extends \Cockpit\AuthController {
             return $this->helper('admin')->denyRequest();
         }
 
-        $collection    = $this->module('collections')->collection($collection);
+        $collection = $this->module('collections')->collection($collection);
+
+        if($collection['first_entry_id'] !== $id) { // prevent further creation of entries for collection that have a max of 1 entry
+            //$this->app->response->status = 406; // Not acceptable
+            return $this->helper('admin')->denyRequest();
+        }
+
         $entry         = new \ArrayObject([]);
         $excludeFields = [];
 

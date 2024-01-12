@@ -98,7 +98,7 @@ function cockpit($module = null) {
         // load config
         $config = array_replace_recursive([
 
-            'debug'        => preg_match('/(localhost|::1|\.local)$/', @$_SERVER['SERVER_NAME']),
+            'debug'        => preg_match('/(localhost|::1|\.local)$/', @$_SERVER['SERVER_NAME']) || isDev(),
             'app.name'     => 'Cockpit',
             'base_url'     => COCKPIT_BASE_URL,
             'base_route'   => COCKPIT_BASE_ROUTE,

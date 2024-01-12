@@ -209,6 +209,10 @@ $this->module('collections')->extend([
             }
         }
 
+        if(intval(($collections[$name]['max_entries'] ?? -1)) === 1){
+            $collections[$name]['first_entry_id'] = $this->app->storage->findOne("collections/{$name}")['_id'] ?? null;
+        }
+
         return $collections[$name];
     },
 

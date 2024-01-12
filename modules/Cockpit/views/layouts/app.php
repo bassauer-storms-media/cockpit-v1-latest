@@ -154,6 +154,8 @@
 
                                 </ul>
 
+                                @trigger('cockpit.menu.aside')
+
                                 @trigger('cockpit.menu')
 
                             </div>

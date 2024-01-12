@@ -17,9 +17,8 @@ class Utils extends \Cockpit\AuthController {
 
         \session_write_close();
 
-        $collections = $this->module('collections')->getCollectionsInGroup(null, true);
+        return $this->module('collections')->getCollectionsInGroup(null, true); /* @see modules/Collections/bootstrap.php */
 
-        return $collections;
     }
 
     public function getLinkedOverview() {

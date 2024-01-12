@@ -68,7 +68,8 @@
 
                     <div class="uk-panel-teaser uk-position-relative">
                         <canvas width="600" height="350"></canvas>
-                        <a aria-label="{ collection.label }" href="@route('/collections/entries')/{collection.name}" class="uk-position-cover uk-flex uk-flex-middle uk-flex-center">
+
+                        <a aria-label="{ collection.label }" href="{getLink(collection)}" class="uk-position-cover uk-flex uk-flex-middle uk-flex-center">
                             <div class="uk-width-1-4 uk-svg-adjust" style="color:{ (collection.meta.color) }">
                                 <img riot-src="{ collection.meta.icon ? '@url('assets:app/media/icons/')'+collection.meta.icon : '@url('collections:icon.svg')'}" alt="icon" data-uk-svg>
                             </div>
@@ -117,12 +118,16 @@
     </div>
 
 
-    <script type="view/script">
+    <script @noOp()type="view/script">
 
         var $this = this;
 
         this.collections = window.__collections;
+        //console.info(this.collections)
         this.groups = [];
+
+        this.collection_entries_link = "@route('/collections/entries')";
+        this.collection_detail_link = "@route('/collections/entry')"; // /collections/entry/$name/$entry['_id']
 
         this.collections.forEach(function(collection) {
 
@@ -138,6 +143,13 @@
         this.on('mount', function() {
             this.loadCounts();
         });
+
+        getLink (collection) {
+            if(collection.meta.max_entries === "1") // TODO make the backend return an int...
+                return this.collection_detail_link+'/'+collection.name+'/'+collection.meta.first_entry_id;
+            else
+                return this.collection_entries_link+'/'+collection.name;
+        }
 
         remove(e, collection) {
 

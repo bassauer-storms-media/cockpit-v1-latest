@@ -15,6 +15,10 @@
                 <div class="uk-panel uk-panel-box uk-panel-card">
 
                     <div class="uk-margin">
+                        <field-boolean bind="collection.in_menu" title="@lang('Show in system menu')" label="@lang('Show in system menu')"></field-boolean>
+                    </div>
+
+                    <div class="uk-margin">
                         <label class="uk-text-small">@lang('Name')</label>
                         <input aria-label="@lang('Name')" class="uk-width-1-1 uk-form-large" type="text" ref="name" bind="collection.name" pattern="[a-zA-Z0-9_]+" required>
                         <p class="uk-text-small uk-text-muted" if="{!collection._id}">
@@ -30,6 +34,11 @@
                     <div class="uk-margin">
                         <label class="uk-text-small">@lang('Group')</label>
                         <input aria-label="@lang('Group')" class="uk-width-1-1 uk-form-large" type="text" ref="group" bind="collection.group">
+                    </div>
+
+                    <div class="uk-margin">
+                        <label class="uk-text-small">@lang('Max entries')</label>
+                        <input aria-label="@lang('Max entries')" class="uk-width-1-1 uk-form-large" type="number" ref="max_entries" bind="collection.max_entries">
                     </div>
 
                     <div class="uk-margin">

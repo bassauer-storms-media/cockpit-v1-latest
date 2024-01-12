@@ -11,6 +11,7 @@
 namespace Cockpit\Helper;
 
 use ArrayObject;
+use Lime\Response;
 
 /**
  * Admin Helper class.
@@ -270,9 +271,9 @@ class Admin extends \Lime\Helper {
     public function denyRequest() {
 
         if ($this->app->module('cockpit')->getUser()) {
-            $this->app->response->status = 401;
+            $this->app->response->status = 401; // Unauthorized
         } else {
-            $this->app->response->status = 404;
+            $this->app->response->status = 404; // Not found
         }
 
         return '';

@@ -32,3 +32,4 @@ defines.php
 # Sublime Text
 *.sublime-workspace
 *.sublime-project
+!/config/.placeholder

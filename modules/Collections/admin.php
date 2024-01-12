@@ -61,6 +61,21 @@ $app->on('admin.init', function() {
         }
     });
 
+    // https://github.com/agentejo/cockpit/commit/825fd730ddbc28898520a885c0bdc94cd893bae9
+    $this->on('cockpit.menu.aside', function() {
+
+        $cols        = $this->module('collections')->getCollectionsInGroup();
+        $collections = [];
+
+        foreach($cols as $collection) {
+            if ($collection['in_menu']) $collections[] = $collection;
+        }
+
+        if (count($collections)) {
+            $this->renderView("collections:views/partials/menu.php", compact('collections'));
+        }
+    });
+
     // dashboard widgets
     $this->on("admin.dashboard.widgets", function($widgets) {
 

@@ -45,12 +45,21 @@ class RestApi extends \LimeExtra\Controller {
 
         $options = [];
 
-        if ($filter   = $this->param('filter', null))   $options['filter'] = $filter;
-        if ($limit    = $this->param('limit', null))    $options['limit'] = \intval($limit);
-        if ($sort     = $this->param('sort', null))     $options['sort'] = $sort;
-        if ($fields   = $this->param('fields', null))   $options['fields'] = $fields;
-        if ($skip     = $this->param('skip', null))     $options['skip'] = \intval($skip);
-        if ($populate = $this->param('populate', null)) $options['populate'] = $populate;
+        if ($filter   = $this->param('filter'))
+            $options['filter'] = $filter;
+        if ($limit    = $this->param('limit'))
+            $options['limit'] = \intval($limit);
+        if ($sort     = $this->param('sort'))
+            $options['sort'] = $sort;
+        if ($fields   = $this->param('fields'))
+            $options['fields'] = $fields;
+        if ($skip     = $this->param('skip'))
+            $options['skip'] = \intval($skip);
+        if ($populate = $this->param('populate'))
+            $options['populate'] = $populate;
+
+        $withFields = $this->param('withFields');
+        $withFields = (bool)$withFields || (trim($withFields) === '' && $withFields !== null);
 
         // cast string values if get request
         if ($filter && isset($this->app->request->query['filter'])) $options['filter'] = $this->app->helper('utils')->fixStringBooleanValues($filter);
@@ -67,7 +76,6 @@ class RestApi extends \LimeExtra\Controller {
         }
 
         if ($sort) {
-
             foreach ($sort as $key => &$value) {
                 $options['sort'][$key]= \intval($value);
             }
@@ -95,29 +103,31 @@ class RestApi extends \LimeExtra\Controller {
 
         $fields = [];
 
-        foreach ($collection['fields'] as $field) {
+        if($withFields) {
+            foreach ($collection['fields'] as $field) {
 
-            if (
-                $user && isset($field['acl']) &&
-                \is_array($field['acl']) && \count($field['acl']) &&
-                !(\in_array($user['_id'] , $field['acl']) || \in_array($user['group'] , $field['acl']))
-            ) {
-                continue;
+                if (
+                    $user && isset($field['acl']) &&
+                    \is_array($field['acl']) && \count($field['acl']) &&
+                    !(\in_array($user['_id'] , $field['acl']) || \in_array($user['group'] , $field['acl']))
+                ) {
+                    continue;
+                }
+
+                $fields[$field['name']] = [
+                    'name' => $field['name'],
+                    'type' => $field['type'],
+                    'localize' => $field['localize'],
+                    'options' => $field['options'],
+                ];
             }
-
-            $fields[$field['name']] = [
-                'name' => $field['name'],
-                'type' => $field['type'],
-                'localize' => $field['localize'],
-                'options' => $field['options'],
-            ];
         }
 
-        return [
-            'fields'   => $fields,
+        return array_filter([
+            'fields'   => $withFields ? $fields : null,
             'entries'  => $entries,
             'total'    => (!$skip && !$limit) ? $count : $this->module('collections')->count($collection['name'], $filter ? $filter : [])
-        ];
+        ]);
 
     }
 

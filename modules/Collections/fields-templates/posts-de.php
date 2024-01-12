@@ -10,11 +10,11 @@
 
 return [
     'name'   => 'posts',
-    'label'  => 'Posts',
+    'label'  => 'Posts (DE)',
     'fields' => [
         [
             'name'     => 'published',
-            'label'    => 'Published',
+            'label'    => 'Veröffentlicht',
             'type'        => 'boolean',
             'default'     => '',
             'info'        => '',
@@ -23,13 +23,12 @@ return [
                 'default' => false,
                 'label'   => false
             ],
-            'width'       => '1-1',
+            'width'       => '1-4',
             'lst'         => true
         ],
-
         [
             'name'     => 'title',
-            'label'    => 'Title',
+            'label'    => 'Titel',
             'type'     => 'text',
             'default'  => '',
             'info'     => '',
@@ -37,14 +36,13 @@ return [
             'options'  => [
                 'slug' => true
             ],
-            'width'    => '1-1',
+            'width'    => '3-4',
             'lst'      => true,
             'required' => true
         ],
-
         [
             'name'     => 'image',
-            'label'    => 'Featured Image',
+            'label'    => 'Foto',
             'type'     => 'asset',
             'default'  => '',
             'info'     => '',
@@ -53,11 +51,10 @@ return [
             'width'    => '1-1',
             'lst'      => true
         ],
-
         [
-            'name'     => 'excerpt',
-            'label'    => 'Excerpt',
-            'type'     => 'markdown',
+            'name'     => 'teaser_text',
+            'label'    => 'Vorschau-Text',
+            'type'     => 'textarea',
             'default'  => '',
             'info'     => '',
             'localize' => false,
@@ -65,29 +62,19 @@ return [
             'width'    => '1-1',
             'lst'      => true
         ],
-
         [
             'name'     => 'content',
-            'label'    => 'Content',
-            'type'     => 'markdown',
+            'label'    => 'Inhalt',
+            'type'     => 'wysiwyg',
             'default'  => '',
             'info'     => '',
             'localize' => false,
-            'options'  => [],
+            'options'  => [
+                'placeholder' => ' '
+            ],
             'width'    => '1-1',
             'lst'      => true
         ],
-        
-        [
-            'name'     => 'tags',
-            'label'    => 'Tags',
-            'type'     => 'tags',
-            'default'  => '',
-            'info'     => '',
-            'localize' => false,
-            'options'  => [],
-            'width'    => '1-1',
-            'lst'      => true
-        ]
+
     ]
 ];
